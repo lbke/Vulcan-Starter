@@ -1,10 +1,10 @@
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from "simpl-schema";
 
 const addressGroup = {
-  name: 'addresses',
-  label: 'Addresses',
+  name: "addresses",
+  label: "Addresses",
   order: 10
-}
+};
 
 /*
 
@@ -15,89 +15,89 @@ export const addressSchema = new SimpleSchema({
   street: {
     type: String,
     optional: false,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
-    max: 100, // limit street address to 100 characters
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"],
+    max: 100 // limit street address to 100 characters
   },
   country: {
     type: String,
     optional: true,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"]
   },
   zipCode: {
     type: Number,
     optional: true,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
-    input: 'number',
-  },
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"],
+    input: "number"
+  }
 });
 
 const schema = {
   _id: {
     type: String,
     optional: true,
-    canRead: ['guests'],
+    canRead: ["guests"]
   },
   createdAt: {
     type: Date,
     optional: true,
     onCreate: () => {
       return new Date();
-    },
+    }
   },
   userId: {
     type: String,
-    optional: true,
+    optional: true
   },
 
   name: {
     type: String,
     optional: false,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
-    searchable: true, // make field searchable
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"],
+    searchable: true // make field searchable
   },
 
   notes: {
     type: String,
     optional: true,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
-    input: 'textarea',
-    searchable: true, // make field searchable
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"],
+    input: "textarea",
+    searchable: true // make field searchable
   },
 
   stage: {
     type: String,
     optional: false,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"],
     searchable: true,
-    input: 'FormFunnel', // use a custom `FormFunnel` form input component
+    input: "FormFunnel" // use a custom `FormFunnel` form input component
   },
 
   meetingDate: {
     type: Date,
     optional: true,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"]
   },
 
   productId: {
     type: String,
     optional: true,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"],
     query: `
       products{
         results{
@@ -107,42 +107,47 @@ const schema = {
       }
     `,
     options: props =>
-      props.data.products &&
-      props.data.products.results.map(product => ({
-        value: product._id,
-        label: product.name,
-      })),
+      props.data.products
+        ? props.data.products.results.map(product => ({
+            value: product._id,
+            label: product.name
+          }))
+        : [],
     resolveAs: {
-      fieldName: 'product',
-      type: 'Product',
+      fieldName: "product",
+      type: "Product",
       resolver: (customer, args, { Products }) =>
         customer.productId && Products.loader.load(customer.productId),
-      addOriginalField: true,
+      addOriginalField: true
     },
-    input: 'select',
+    input: "select"
   },
 
   isVIP: {
     type: Boolean,
     optional: true,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"]
   },
 
   categories: {
     type: Array,
     optional: true,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
-    options: [{ label: 'Tech', value: 'tech' }, { label: 'Finance', value: 'finance' }, { label: 'Medical', value: 'medical' }],
-    input: 'checkboxgroup',
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"],
+    options: [
+      { label: "Tech", value: "tech" },
+      { label: "Finance", value: "finance" },
+      { label: "Medical", value: "medical" }
+    ],
+    input: "checkboxgroup"
   },
 
-  'categories.$': {
+  "categories.$": {
     type: String,
-    optional: true,
+    optional: true
   },
 
   /*
@@ -153,15 +158,15 @@ const schema = {
   */
   addresses: {
     type: Array,
-    canRead: ['guests'],
-    canUpdate: ['members'],
-    canCreate: ['members'],
-    group: addressGroup,
+    canRead: ["guests"],
+    canUpdate: ["members"],
+    canCreate: ["members"],
+    group: addressGroup
   },
 
-  'addresses.$': {
-    type: addressSchema,
-  },
+  "addresses.$": {
+    type: addressSchema
+  }
 };
 
 export default schema;
