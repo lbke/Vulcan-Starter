@@ -53,6 +53,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
+    canRead:['members', 'admins']
   },
 
   name: {
